@@ -24,4 +24,4 @@ Released under the MIT License.
 Run this single command in your Raspberry Pi's SSH terminal:
 
 ```bash
-curl -sSL [https://raw.githubusercontent.com/duncanmascarenhas/moode-bluetooth-overlay/main/install.sh](https://raw.githubusercontent.com/duncanmascarenhas/moode-bluetooth-overlay/main/install.sh) | sudo bash
+curl -sSL https://raw.githubusercontent.com/duncanmascarenhas/moode-bluetooth-overlay/main/install.sh | sudo bash
