@@ -5,7 +5,7 @@ A responsive, high-end "frosted glass" Bluetooth screen for Moode Audio. It sile
 
 ### 🌟 Features
 * **Dynamic Artwork:** Fetches High-Res album covers instantly from Apple Music.
-* **Smart Cleaning:** Removes YouTube noise (e.g., `[Official Video]`, `|`) from titles for better search matching.
+* **Smart Cleaning:** Removes YouTube noise (e.g., `[Official Video]`, `|`) from titles for better search matching. 
 * **Fully Responsive:** Scales perfectly on mobile browsers, tablets, and local desktop displays using CSS clamping.
 * **Non-Destructive:** Leverages a custom JavaScript observer without ruining Moode's core templates.
 
