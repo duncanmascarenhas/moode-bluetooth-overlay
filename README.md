@@ -1,6 +1,8 @@
 # Moode Audio Premium Bluetooth Dashboard
 A responsive, high-end "frosted glass" Bluetooth screen for Moode Audio. It silently listens to your Bluetooth streams in the background, fetches high-resolution album artwork from the Apple Music API, and dynamically injects a scalable layout over Moode's default Bluetooth placeholder screen.
 
+<img src="screenshot.png" width="400" alt="Moode Premium Bluetooth Dashboard">
+
 ### 🌟 Features
 * **Dynamic Artwork:** Fetches High-Res album covers instantly from Apple Music.
 * **Smart Cleaning:** Removes YouTube noise (e.g., `[Official Video]`, `|`) from titles for better search matching.
