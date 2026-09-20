@@ -66,13 +66,21 @@ def fetch_artwork(artist, title, album):
 def on_property_changed(interface, changed, invalidated, path):
     if interface != "org.bluez.MediaPlayer1": return
     
-    # Handle explicit 'stopped' status
-    if "Status" in changed and str(changed["Status"]) == "stopped":
-        if os.path.exists(DEFAULT_COVER): shutil.copyfile(DEFAULT_COVER, COVER_ART_PATH)
-        with open(META_PATH, 'w') as f: json.dump({"title": "Playback Stopped", "artist": "", "album": "", "art_time": int(time.time())}, f)
-        return
+    # 1. Handle playback state changes
+    if "Status" in changed:
+        status = str(changed["Status"])
+        if status == "stopped":
+            if os.path.exists(DEFAULT_COVER): shutil.copyfile(DEFAULT_COVER, COVER_ART_PATH)
+            with open(META_PATH, 'w') as f: json.dump({"title": "Playback Stopped", "artist": "", "album": "", "art_time": int(time.time())}, f)
+            return
+        # If playback resumed but the track data wasn't broadcast, fetch it manually from D-Bus
+        elif status in ["playing", "paused"] and "Track" not in changed:
+            try:
+                props = dbus.Interface(bus.get_object("org.bluez", path), "org.freedesktop.DBus.Properties")
+                changed["Track"] = props.Get("org.bluez.MediaPlayer1", "Track")
+            except: pass
 
-    # Handle track clearing or changing
+    # 2. Process track data
     if "Track" in changed:
         t = changed["Track"]
         title, artist = str(t.get("Title", "")), str(t.get("Artist", ""))
