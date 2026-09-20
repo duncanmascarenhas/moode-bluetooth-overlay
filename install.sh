@@ -64,9 +64,23 @@ def fetch_artwork(artist, title, album):
     with open(META_PATH, 'w') as f: json.dump({"title": title or "Unknown", "artist": artist or "", "album": album or "", "art_time": int(time.time())}, f)
 
 def on_property_changed(interface, changed, invalidated, path):
-    if interface == "org.bluez.MediaPlayer1" and "Track" in changed:
+    if interface != "org.bluez.MediaPlayer1": return
+    
+    # Handle explicit 'stopped' status
+    if "Status" in changed and str(changed["Status"]) == "stopped":
+        if os.path.exists(DEFAULT_COVER): shutil.copyfile(DEFAULT_COVER, COVER_ART_PATH)
+        with open(META_PATH, 'w') as f: json.dump({"title": "Playback Stopped", "artist": "", "album": "", "art_time": int(time.time())}, f)
+        return
+
+    # Handle track clearing or changing
+    if "Track" in changed:
         t = changed["Track"]
-        if t.get("Artist", "") or t.get("Title", ""): fetch_artwork(str(t.get("Artist", "")), str(t.get("Title", "")), str(t.get("Album", "")))
+        title, artist = str(t.get("Title", "")), str(t.get("Artist", ""))
+        if title or artist:
+            fetch_artwork(artist, title, str(t.get("Album", "")))
+        else:
+            if os.path.exists(DEFAULT_COVER): shutil.copyfile(DEFAULT_COVER, COVER_ART_PATH)
+            with open(META_PATH, 'w') as f: json.dump({"title": "No Track Playing", "artist": "", "album": "", "art_time": int(time.time())}, f)
 
 if __name__ == "__main__":
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
