@@ -323,5 +323,7 @@ echo "==> [6/6] Starting robust services..."
 systemctl restart moode-bt-art.service
 
 echo "--------------------------------------------------------"
-echo " V2.13 Installation Complete! (Hard refresh browser)"
+echo " Installation Complete! Rebooting in 5 seconds..."
 echo "--------------------------------------------------------"
+sleep 5
+sudo reboot
